@@ -7,24 +7,22 @@ namespace Fend.Cli.Commands;
 
 internal sealed class ScanCommand
 {
-    private readonly IDependencyGraphBuilder _dependencyGraphBuilder;
+    private readonly IScanner _scanner;
 
-    public ScanCommand(IDependencyGraphBuilder dependencyGraphBuilder)
+    public ScanCommand(IScanner scanner)
     {
-        _dependencyGraphBuilder = dependencyGraphBuilder;
+        _scanner = scanner;
     }
 
     [Command("scan", 
         Aliases = ["s"], 
         Description = "Scan a project directory to construct a dependency graph")]
-    public Task Scan([Argument][PathExists] string? target)
+    public async Task Scan([Argument][PathExists] string? target)
     {
         target ??= Directory.GetCurrentDirectory();
         
         var directory = Directory.CreateDirectory(target);
         
-        _dependencyGraphBuilder.BuildAsync(directory);
-        
-        return Task.CompletedTask;
+        await _scanner.ScanAsync(directory, CancellationToken.None);
     }
 }

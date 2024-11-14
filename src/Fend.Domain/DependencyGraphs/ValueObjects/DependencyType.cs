@@ -4,5 +4,6 @@ public enum DependencyType
 {
     Project,
     NuGet,
+    Local,
     Npm
 }

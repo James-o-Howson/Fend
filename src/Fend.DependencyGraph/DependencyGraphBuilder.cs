@@ -12,7 +12,8 @@ internal sealed class DependencyGraphBuilder : IDependencyGraphBuilder
 
     public DependencyGraphBuilder(IEnumerable<IManifestDependencyBuilder> projectBuilders) => _projectBuilders = projectBuilders;
 
-    public async Task BuildAsync(DirectoryInfo projectDirectory, CancellationToken cancellationToken = default)
+    public async Task<DepGraph?> BuildAsync(DirectoryInfo projectDirectory,
+        CancellationToken cancellationToken = default)
     {
         var dependencyGraph = InitDependencyGraph(projectDirectory);
         var context = BuilderContext.Create(projectDirectory, _projectBuilders, cancellationToken);
@@ -20,7 +21,7 @@ internal sealed class DependencyGraphBuilder : IDependencyGraphBuilder
         foreach (var filePath in GetAllProjectFiles(projectDirectory))
         {
             var matchingBuilders = context.GetBuildersForFile(filePath);
-            if (matchingBuilders.Count == 0) return;
+            if (matchingBuilders.Count == 0) return null;
             
             // Don't read content or make file info unless the file path matches a builder, it's expensive.
             var projectFileInfo = new FileInfo(filePath);  
@@ -33,6 +34,8 @@ internal sealed class DependencyGraphBuilder : IDependencyGraphBuilder
                 UpdateDependencyGraph(dependencyGraph, result);
             }
         }
+        
+        return dependencyGraph;
     }
 
     private static void UpdateDependencyGraph(DepGraph dependencyGraph, ManifestBuilderResult result)

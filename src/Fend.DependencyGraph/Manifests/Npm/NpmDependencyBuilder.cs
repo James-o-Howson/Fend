@@ -11,7 +11,7 @@ internal sealed class NpmDependencyBuilder : IManifestDependencyBuilder
     private static readonly JsonSerializerOptions JsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
     
     private const string JsonFileSearchPattern = "*.json";
-    private const string PackageJson = "dependencyItem.json";
+    private const string PackageJson = "package.json";
     private const string AngularJson = "angular.json";
 
     public bool IsRootDirectory(DirectoryInfo potentialProject)
