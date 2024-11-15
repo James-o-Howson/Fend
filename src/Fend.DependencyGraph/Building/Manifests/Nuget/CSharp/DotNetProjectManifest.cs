@@ -1,4 +1,4 @@
-﻿namespace Fend.DependencyGraph.Manifests.Nuget.CSharp;
+﻿namespace Fend.DependencyGraph.Building.Manifests.Nuget.CSharp;
 
 public class DotNetProjectManifest
 {

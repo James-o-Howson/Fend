@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fend.SharedKernel.Events.Integration;
+﻿namespace Fend.SharedKernel.Events.Integration;
 
 public abstract class IntegrationEvent : IIntegrationEvent
 {

@@ -22,19 +22,19 @@ public sealed class DependencyNode : IEntity<DependencyNodeId>
 
     public void AddDependency(DependencyNode node)
     {
-        if (WouldCreateCycle(node)) throw new DomainException("Adding this dependency would create a cycle");
+        if (WouldCreateCircularReference(node)) throw new DomainException("Adding this dependency would create a circular reference.");
 
         _dependencies.Add(node);
         node._dependents.Add(this);
     }
 
-    private bool WouldCreateCycle(DependencyNode newDependency, HashSet<DependencyNode>? visited = null)
+    private bool WouldCreateCircularReference(DependencyNode newDependency, HashSet<DependencyNode>? visited = null)
     {
         visited ??= [];
 
         if (!visited.Add(this)) return true;
         if (this == newDependency) return true;
 
-        return _dependencies.Any(dependency => dependency.WouldCreateCycle(newDependency, visited));
+        return _dependencies.Any(dependency => dependency.WouldCreateCircularReference(newDependency, visited));
     }
 }

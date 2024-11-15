@@ -1,10 +1,10 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Fend.DependencyGraph.Manifests.Nuget.CSharp;
+using Fend.DependencyGraph.Building.Manifests.Nuget.CSharp;
 using Fend.Domain.DependencyGraphs.Builders;
 using Fend.Domain.DependencyGraphs.ValueObjects;
 
-namespace Fend.DependencyGraph.Manifests.Nuget;
+namespace Fend.DependencyGraph.Building.Manifests.Nuget;
 
 internal sealed partial class NugetDependencyBuilder : IManifestDependencyBuilder
 {
@@ -17,11 +17,11 @@ internal sealed partial class NugetDependencyBuilder : IManifestDependencyBuilde
     private const string SolutionFileExtension = ".sln";
     private const string SolutionFileSearchPattern = $"*{SolutionFileExtension}";
     
-    private readonly IEnumerable<ICSharpProjectManifestParser> _cSharpProjectParsers;
+    private readonly IEnumerable<ICSharpProjectManifestBuilder> _cSharpProjectBuilders;
 
-    public NugetDependencyBuilder(IEnumerable<ICSharpProjectManifestParser> cSharpProjectParsers)
+    public NugetDependencyBuilder(IEnumerable<ICSharpProjectManifestBuilder> cSharpProjectBuilders)
     {
-        _cSharpProjectParsers = cSharpProjectParsers;
+        _cSharpProjectBuilders = cSharpProjectBuilders;
     }
 
     public bool IsRootDirectory(DirectoryInfo potentialProject) => 
@@ -29,7 +29,7 @@ internal sealed partial class NugetDependencyBuilder : IManifestDependencyBuilde
 
     public bool IsManifest(string potentialProjectPath) =>
         !string.IsNullOrEmpty(potentialProjectPath) && 
-        potentialProjectPath.EndsWith(SolutionFileExtension);
+        potentialProjectPath.EndsWith(potentialProjectPath);
 
     public async Task<ManifestBuilderResult?> BuildAsync(FileInfo solutionFile, IBuilderContext context)
     {
@@ -61,7 +61,7 @@ internal sealed partial class NugetDependencyBuilder : IManifestDependencyBuilde
             
             // _logger.LogInformation("Parsing CSharp Project {CsprojFilePath}", definition.FilePath);
 
-            var projectDependencies = _cSharpProjectParsers
+            var projectDependencies = _cSharpProjectBuilders
                 .SelectMany(p => p.ParseAsync(manifest.Content)).ToHashSet();
 
             var projectId = DependencyItemId.Create(manifest.Name, await GetDotNetVersionAsync(manifest.Content));

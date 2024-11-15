@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fend.SharedKernel.Abstractions;
+﻿namespace Fend.SharedKernel.Abstractions;
 
 public interface IAuditableEntity
 {

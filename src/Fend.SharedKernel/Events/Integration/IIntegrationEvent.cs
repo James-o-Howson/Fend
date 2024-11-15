@@ -1,5 +1,3 @@
-using System;
-
 namespace Fend.SharedKernel.Events.Integration;
 
 public interface IIntegrationEvent

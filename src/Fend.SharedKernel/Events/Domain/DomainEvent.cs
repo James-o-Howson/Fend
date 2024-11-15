@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fend.SharedKernel.Events.Domain;
+﻿namespace Fend.SharedKernel.Events.Domain;
 
 public abstract class DomainEvent : IDomainEvent
 {

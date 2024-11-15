@@ -1,18 +1,30 @@
-﻿using Fend.Domain.DependencyGraphs.Builders;
+﻿using Fend.Abstractions.Commands;
+using Fend.Contracts.DependencyGraphs;
+using Fend.Domain.DependencyGraphs;
+using Fend.Domain.DependencyGraphs.Builders;
 using Fend.Domain.DependencyGraphs.ValueObjects;
-using DepGraph = Fend.Domain.DependencyGraphs.DependencyGraph;
 
-namespace Fend.DependencyGraph;
+namespace Fend.Commands.Scans.RunDependencyScan;
 
-internal sealed class DependencyGraphBuilder : IDependencyGraphBuilder
+internal sealed class RunDependencyScanHandler : ICommandHandler<RunDependencyScanCommand, DependencyGraphDto>
 {
     private const string AllFilesSearchPattern = "*.*";
-    
+
     private readonly IEnumerable<IManifestDependencyBuilder> _projectBuilders;
 
-    public DependencyGraphBuilder(IEnumerable<IManifestDependencyBuilder> projectBuilders) => _projectBuilders = projectBuilders;
+    public RunDependencyScanHandler(IEnumerable<IManifestDependencyBuilder> projectBuilders)
+    {
+        _projectBuilders = projectBuilders;
+    }
 
-    public async Task<DepGraph?> BuildAsync(DirectoryInfo projectDirectory,
+    public async Task<DependencyGraphDto> HandleAsync(RunDependencyScanCommand command, CancellationToken cancellationToken = default)
+    {
+        var dependencyGraph = await BuildAsync(command.Target, cancellationToken);
+
+        return dependencyGraph.ToDto();
+    }
+    
+    private async Task<DependencyGraph> BuildAsync(DirectoryInfo projectDirectory,
         CancellationToken cancellationToken = default)
     {
         var dependencyGraph = InitDependencyGraph(projectDirectory);
@@ -21,7 +33,7 @@ internal sealed class DependencyGraphBuilder : IDependencyGraphBuilder
         foreach (var filePath in GetAllProjectFiles(projectDirectory))
         {
             var matchingBuilders = context.GetBuildersForFile(filePath);
-            if (matchingBuilders.Count == 0) return null;
+            if (matchingBuilders.Count == 0) continue;
             
             // Don't read content or make file info unless the file path matches a builder, it's expensive.
             var projectFileInfo = new FileInfo(filePath);  
@@ -34,11 +46,11 @@ internal sealed class DependencyGraphBuilder : IDependencyGraphBuilder
                 UpdateDependencyGraph(dependencyGraph, result);
             }
         }
-        
+
         return dependencyGraph;
     }
 
-    private static void UpdateDependencyGraph(DepGraph dependencyGraph, ManifestBuilderResult result)
+    private static void UpdateDependencyGraph(DependencyGraph dependencyGraph, ManifestBuilderResult result)
     {
         foreach (var (parent, dependencies) in result.DependenciesByParent)
         {
@@ -47,12 +59,12 @@ internal sealed class DependencyGraphBuilder : IDependencyGraphBuilder
         }
     }
 
-    private static DepGraph InitDependencyGraph(DirectoryInfo projectDirectory)
+    private static DependencyGraph InitDependencyGraph(DirectoryInfo projectDirectory)
     {
         var id = DependencyItemId.Create(projectDirectory.Name);
         var rootNode = DependencyItem.Create(id, DependencyType.Project);
         
-        return new DepGraph(rootNode);
+        return new DependencyGraph(rootNode);
     }
 
     private static ParallelQuery<string> GetAllProjectFiles(DirectoryInfo projectDirectory) => 

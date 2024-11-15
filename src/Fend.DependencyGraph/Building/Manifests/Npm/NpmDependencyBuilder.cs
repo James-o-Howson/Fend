@@ -2,9 +2,8 @@
 using System.Text.Json;
 using Fend.Domain.DependencyGraphs.Builders;
 using Fend.Domain.DependencyGraphs.ValueObjects;
-using DepGraph = Fend.Domain.DependencyGraphs.DependencyGraph;
 
-namespace Fend.DependencyGraph.Manifests.Npm;
+namespace Fend.DependencyGraph.Building.Manifests.Npm;
 
 internal sealed class NpmDependencyBuilder : IManifestDependencyBuilder
 {
@@ -22,7 +21,7 @@ internal sealed class NpmDependencyBuilder : IManifestDependencyBuilder
     }
 
     public bool IsManifest(string potentialProjectPath) =>
-        !string.IsNullOrWhiteSpace(potentialProjectPath) && IsNodeManifest(PackageJson);
+        !string.IsNullOrWhiteSpace(potentialProjectPath) && IsNodeManifest(potentialProjectPath);
 
     public async Task<ManifestBuilderResult?> BuildAsync(FileInfo projectFile, IBuilderContext context)
     {

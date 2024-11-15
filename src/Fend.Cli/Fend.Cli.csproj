@@ -12,7 +12,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Fend.Commands\Fend.Commands.csproj" />
       <ProjectReference Include="..\Fend.DependencyGraph\Fend.DependencyGraph.csproj" />
+      <ProjectReference Include="..\Fend.Infrastructure\Fend.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

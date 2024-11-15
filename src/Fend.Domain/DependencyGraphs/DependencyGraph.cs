@@ -35,19 +35,6 @@ public sealed class DependencyGraph : AggregateRoot<DependencyGraphId>
         return node;
     }
 
-    private void AddNodeToIndex(DependencyNode node)
-    {
-        _nodesById[node.Id] = node;
-        
-        if (!_nodesByDependencyItemId.TryGetValue(node.DependencyItem.Id, out var nodes))
-        {
-            nodes = [];
-            _nodesByDependencyItemId[node.DependencyItem.Id] = nodes;
-        }
-        
-        nodes.Add(node);
-    }
-
     public IEnumerable<DependencyItem> GetAllDependencyItems()
         => _nodesByDependencyItemId.Keys.Select(id => _nodesByDependencyItemId[id].First().DependencyItem);
 
@@ -82,6 +69,19 @@ public sealed class DependencyGraph : AggregateRoot<DependencyGraphId>
         }
 
         return paths.OrderBy(p => p.Count);
+    }
+    
+    private void AddNodeToIndex(DependencyNode node)
+    {
+        _nodesById[node.Id] = node;
+        
+        if (!_nodesByDependencyItemId.TryGetValue(node.DependencyItem.Id, out var nodes))
+        {
+            nodes = [];
+            _nodesByDependencyItemId[node.DependencyItem.Id] = nodes;
+        }
+        
+        nodes.Add(node);
     }
 
     private IEnumerable<IList<DependencyItem>> FindNodePathsToRoot(

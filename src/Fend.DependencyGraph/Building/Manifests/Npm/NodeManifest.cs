@@ -1,4 +1,4 @@
-﻿namespace Fend.DependencyGraph.Manifests.Npm;
+﻿namespace Fend.DependencyGraph.Building.Manifests.Npm;
 
 internal sealed class NodeManifest
 {

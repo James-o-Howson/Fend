@@ -1,9 +1,9 @@
 ﻿using System.Xml.Linq;
 using Fend.Domain.DependencyGraphs.ValueObjects;
 
-namespace Fend.DependencyGraph.Manifests.Nuget.CSharp;
+namespace Fend.DependencyGraph.Building.Manifests.Nuget.CSharp;
 
-internal sealed class NugetPackageReferenceAttributeParser : ICSharpProjectManifestParser
+internal sealed class NugetPackageReferenceAttributeBuilder : ICSharpProjectManifestBuilder
 {
     public HashSet<DependencyItem> ParseAsync(string projectContent)
     {

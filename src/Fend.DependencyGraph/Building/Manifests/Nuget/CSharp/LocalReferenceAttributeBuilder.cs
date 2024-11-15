@@ -2,9 +2,9 @@
 using System.Xml.Linq;
 using Fend.Domain.DependencyGraphs.ValueObjects;
 
-namespace Fend.DependencyGraph.Manifests.Nuget.CSharp;
+namespace Fend.DependencyGraph.Building.Manifests.Nuget.CSharp;
 
-internal sealed partial class LocalReferenceAttributeParser : ICSharpProjectManifestParser
+internal sealed partial class LocalReferenceAttributeBuilder : ICSharpProjectManifestBuilder
 {
     [GeneratedRegex(@"\d+(?:\.\d+)+")]
     private static partial Regex VersionRegex();
