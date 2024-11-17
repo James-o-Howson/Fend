@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using Fend.Domain.DependencyGraphs.Building;
 
-namespace Fend.Commands.Scans.RunDependencyScan;
+namespace Fend.DependencyGraph.Building;
 
 internal class BuilderContext : IBuilderContext
 {

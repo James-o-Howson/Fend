@@ -1,32 +1,22 @@
-﻿using Fend.Abstractions.Commands;
-using Fend.Contracts.DependencyGraphs;
-using Fend.Contracts.Scans;
-using Fend.Domain.DependencyGraphs;
+﻿using Fend.Domain.DependencyGraphs;
 using Fend.Domain.DependencyGraphs.Building;
 using Fend.Domain.DependencyGraphs.ValueObjects;
+using DepGraph = Fend.Domain.DependencyGraphs.DependencyGraph;
 
-namespace Fend.Commands.Scans.RunDependencyScan;
+namespace Fend.DependencyGraph.Building;
 
-internal sealed class RunDependencyScanHandler : ICommandHandler<RunDependencyScanCommand, ScanResultDto>
+internal sealed class DependencyGraphBuilder : IDependencyGraphBuilder
 {
     private const string AllFilesSearchPattern = "*.*";
-    private const string FileName = "vulns.json";
 
     private readonly IEnumerable<IManifestDependencyBuilder> _projectBuilders;
 
-    public RunDependencyScanHandler(IEnumerable<IManifestDependencyBuilder> projectBuilders)
+    public DependencyGraphBuilder(IEnumerable<IManifestDependencyBuilder> projectBuilders)
     {
         _projectBuilders = projectBuilders;
     }
 
-    public async Task<ScanResultDto> HandleAsync(RunDependencyScanCommand command, CancellationToken cancellationToken = default)
-    {
-        var dependencyGraph = await BuildAsync(command.Target, cancellationToken);
-
-        return new ScanResultDto(dependencyGraph.ToDto(), GetOutputPath(command));
-    }
-    
-    private async Task<DependencyGraph> BuildAsync(DirectoryInfo projectDirectory,
+    public async Task<DepGraph> BuildAsync(DirectoryInfo projectDirectory,
         CancellationToken cancellationToken = default)
     {
         var dependencyGraph = InitDependencyGraph(projectDirectory);
@@ -52,7 +42,7 @@ internal sealed class RunDependencyScanHandler : ICommandHandler<RunDependencySc
         return dependencyGraph;
     }
 
-    private static void UpdateDependencyGraph(DependencyGraph dependencyGraph, ManifestBuilderResult result)
+    private static void UpdateDependencyGraph(DepGraph dependencyGraph, ManifestBuilderResult result)
     {
         foreach (var (parent, dependencies) in result.DependenciesByParent)
         {
@@ -61,21 +51,16 @@ internal sealed class RunDependencyScanHandler : ICommandHandler<RunDependencySc
         }
     }
 
-    private static DependencyGraph InitDependencyGraph(DirectoryInfo projectDirectory)
+    private static DepGraph InitDependencyGraph(DirectoryInfo projectDirectory)
     {
         var id = DependencyItemId.Create(projectDirectory.Name);
         var rootNode = DependencyItem.Create(id, DependencyType.Project);
         
-        return new DependencyGraph(rootNode);
+        return new DepGraph(rootNode);
     }
 
     private static ParallelQuery<string> GetAllProjectFiles(DirectoryInfo projectDirectory) => 
         Directory.EnumerateFiles(projectDirectory.FullName, AllFilesSearchPattern, SearchOption.AllDirectories)
             .AsParallel()
             .WithDegreeOfParallelism(Environment.ProcessorCount);
-    
-    private static string GetOutputPath(RunDependencyScanCommand command) =>
-        string.IsNullOrWhiteSpace(command.OutputPath) ? 
-            Path.Join(command.Target.FullName, FileName) : 
-            command.OutputPath;
 }

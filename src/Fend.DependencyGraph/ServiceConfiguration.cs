@@ -1,6 +1,8 @@
-﻿using Fend.DependencyGraph.Building.Manifests.Npm;
+﻿using Fend.DependencyGraph.Building;
+using Fend.DependencyGraph.Building.Manifests.Npm;
 using Fend.DependencyGraph.Building.Manifests.Nuget;
 using Fend.DependencyGraph.Building.Manifests.Nuget.CSharp;
+using Fend.Domain.DependencyGraphs;
 using Fend.Domain.DependencyGraphs.Building;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +12,8 @@ public static class ServiceConfiguration
 {
     public static void AddDependencyGraph(this IServiceCollection services)
     {
+        services.AddTransient<IDependencyGraphBuilder, DependencyGraphBuilder>();
+        
         // Npm
         services.AddTransient<IManifestDependencyBuilder, NpmDependencyBuilder>();
         
