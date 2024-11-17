@@ -1,14 +1,16 @@
 ﻿using Fend.Abstractions.Commands;
 using Fend.Contracts.DependencyGraphs;
+using Fend.Contracts.Scans;
 using Fend.Domain.DependencyGraphs;
-using Fend.Domain.DependencyGraphs.Builders;
+using Fend.Domain.DependencyGraphs.Building;
 using Fend.Domain.DependencyGraphs.ValueObjects;
 
 namespace Fend.Commands.Scans.RunDependencyScan;
 
-internal sealed class RunDependencyScanHandler : ICommandHandler<RunDependencyScanCommand, DependencyGraphDto>
+internal sealed class RunDependencyScanHandler : ICommandHandler<RunDependencyScanCommand, ScanResultDto>
 {
     private const string AllFilesSearchPattern = "*.*";
+    private const string FileName = "dependencies.json";
 
     private readonly IEnumerable<IManifestDependencyBuilder> _projectBuilders;
 
@@ -17,11 +19,11 @@ internal sealed class RunDependencyScanHandler : ICommandHandler<RunDependencySc
         _projectBuilders = projectBuilders;
     }
 
-    public async Task<DependencyGraphDto> HandleAsync(RunDependencyScanCommand command, CancellationToken cancellationToken = default)
+    public async Task<ScanResultDto> HandleAsync(RunDependencyScanCommand command, CancellationToken cancellationToken = default)
     {
         var dependencyGraph = await BuildAsync(command.Target, cancellationToken);
 
-        return dependencyGraph.ToDto();
+        return new ScanResultDto(dependencyGraph.ToDto(), GetOutputPath(command));
     }
     
     private async Task<DependencyGraph> BuildAsync(DirectoryInfo projectDirectory,
@@ -71,4 +73,9 @@ internal sealed class RunDependencyScanHandler : ICommandHandler<RunDependencySc
         Directory.EnumerateFiles(projectDirectory.FullName, AllFilesSearchPattern, SearchOption.AllDirectories)
             .AsParallel()
             .WithDegreeOfParallelism(Environment.ProcessorCount);
+    
+    private static string GetOutputPath(RunDependencyScanCommand command) =>
+        string.IsNullOrWhiteSpace(command.OutputPath) ? 
+            Path.Join(command.Target.FullName, FileName) : 
+            command.OutputPath;
 }

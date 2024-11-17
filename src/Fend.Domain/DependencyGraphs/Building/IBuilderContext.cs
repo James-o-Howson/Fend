@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 
-namespace Fend.Domain.DependencyGraphs.Builders;
+namespace Fend.Domain.DependencyGraphs.Building;
 
 public interface IBuilderContext
 {

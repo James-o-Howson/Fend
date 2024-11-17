@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
-using Fend.Domain.DependencyGraphs.Builders;
+using Fend.Domain.DependencyGraphs.Building;
 using Fend.Domain.DependencyGraphs.ValueObjects;
 
 namespace Fend.DependencyGraph.Building.Manifests.Npm;

@@ -1,6 +1,6 @@
 ﻿using Fend.Domain.DependencyGraphs.ValueObjects;
 
-namespace Fend.Domain.DependencyGraphs.Builders;
+namespace Fend.Domain.DependencyGraphs.Building;
 
 public sealed class ManifestBuilderResult
 {

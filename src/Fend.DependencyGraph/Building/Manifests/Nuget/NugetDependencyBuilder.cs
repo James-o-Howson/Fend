@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Fend.DependencyGraph.Building.Manifests.Nuget.CSharp;
-using Fend.Domain.DependencyGraphs.Builders;
+using Fend.Domain.DependencyGraphs.Building;
 using Fend.Domain.DependencyGraphs.ValueObjects;
 
 namespace Fend.DependencyGraph.Building.Manifests.Nuget;

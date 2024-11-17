@@ -1,4 +1,4 @@
-﻿namespace Fend.Domain.DependencyGraphs.Builders;
+﻿namespace Fend.Domain.DependencyGraphs.Building;
 
 public interface IManifestDependencyBuilder
 {

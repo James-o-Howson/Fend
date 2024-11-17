@@ -1,9 +1,8 @@
-﻿using Fend.DependencyGraph.Building;
-using Fend.DependencyGraph.Building.Manifests.Npm;
+﻿using Fend.DependencyGraph.Building.Manifests.Npm;
+using Fend.DependencyGraph.Building.Manifests.Nuget;
 using Fend.DependencyGraph.Building.Manifests.Nuget.CSharp;
-using Fend.Domain.DependencyGraphs.Builders;
+using Fend.Domain.DependencyGraphs.Building;
 using Microsoft.Extensions.DependencyInjection;
-using NugetDependencyBuilder = Fend.DependencyGraph.Building.Manifests.Nuget.NugetDependencyBuilder;
 
 namespace Fend.DependencyGraph;
 

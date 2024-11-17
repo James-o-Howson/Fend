@@ -1,14 +1,12 @@
-﻿using Fend.Domain.DependencyGraphs;
+﻿using Fend.Contracts.Scans;
+using Fend.Domain.DependencyGraphs;
 
 namespace Fend.Contracts.DependencyGraphs;
 
 public static class DependencyGraphMapper
 {
-    public static DependencyGraphDto ToDto(this DependencyGraph dependencyGraph)
-    {
-        var rootDependency = GetDependencyDto(dependencyGraph.RootNode);
-        return new DependencyGraphDto(rootDependency);
-    }
+    public static DependencyDto ToDto(this DependencyGraph dependencyGraph) => 
+        GetDependencyDto(dependencyGraph.RootNode);
 
     private static List<DependencyDto> GetDependencies(DependencyNode dependencyNode) =>
         dependencyNode.Dependencies

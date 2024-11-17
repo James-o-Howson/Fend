@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Fend.Abstractions\Fend.Abstractions.csproj" />
       <ProjectReference Include="..\Fend.Domain\Fend.Domain.csproj" />
     </ItemGroup>
 

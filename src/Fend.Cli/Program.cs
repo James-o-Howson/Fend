@@ -1,6 +1,7 @@
 ﻿using Cocona;
 using Fend.Cli;
 using Fend.Cli.Commands;
+using Fend.Cli.Commands.Scan;
 using Fend.Commands;
 using Fend.DependencyGraph;
 using Fend.Infrastructure;
