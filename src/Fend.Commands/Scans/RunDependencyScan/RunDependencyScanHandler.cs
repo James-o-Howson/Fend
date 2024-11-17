@@ -10,7 +10,7 @@ namespace Fend.Commands.Scans.RunDependencyScan;
 internal sealed class RunDependencyScanHandler : ICommandHandler<RunDependencyScanCommand, ScanResultDto>
 {
     private const string AllFilesSearchPattern = "*.*";
-    private const string FileName = "dependencies.json";
+    private const string FileName = "vulns.json";
 
     private readonly IEnumerable<IManifestDependencyBuilder> _projectBuilders;
 
