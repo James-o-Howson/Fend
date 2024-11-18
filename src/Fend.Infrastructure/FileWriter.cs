@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using Fend.Abstractions;
+using Fend.Abstractions.Interfaces;
 
 namespace Fend.Infrastructure;
 

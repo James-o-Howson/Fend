@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Fend.Abstractions;
+using Fend.Abstractions.Interfaces;
 using Fend.Contracts.DependencyGraphs;
 using Fend.Contracts.Scans;
 using Fend.Domain.DependencyGraphs;

@@ -1,4 +1,5 @@
 ﻿using Fend.Abstractions;
+using Fend.Abstractions.Interfaces;
 using Fend.SharedKernel.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,4 +1,4 @@
-﻿namespace Fend.Abstractions;
+﻿namespace Fend.Abstractions.Interfaces;
 
 public interface IFileWriter
 {

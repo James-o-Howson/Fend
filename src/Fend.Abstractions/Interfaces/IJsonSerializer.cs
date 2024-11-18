@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Fend.Abstractions;
+namespace Fend.Abstractions.Interfaces;
 
 public interface IJsonSerializer
 {
