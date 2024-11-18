@@ -32,7 +32,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fend.Domain.Tests", "tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fend.Infrastructure", "src\Fend.Infrastructure\Fend.Infrastructure.csproj", "{65FA0A55-BCCE-4194-9039-39F0448CC065}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fend.Cli.Commands", "src\Fend.Cli.Commands\Fend.Cli.Commands.csproj", "{B51FB0F9-CD9E-459D-BBD6-EC505E88993E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fend.Commands", "src\Fend.Commands\Fend.Commands.csproj", "{B51FB0F9-CD9E-459D-BBD6-EC505E88993E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fend.Contracts", "src\Fend.Contracts\Fend.Contracts.csproj", "{6984C802-459C-4370-8271-5B5D27940843}"
 EndProject

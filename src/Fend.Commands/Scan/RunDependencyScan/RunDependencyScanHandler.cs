@@ -1,13 +1,13 @@
 ﻿using System.Text.Json;
 using Fend.Abstractions;
-using Fend.Abstractions.Commands;
 using Fend.Contracts.DependencyGraphs;
 using Fend.Contracts.Scans;
 using Fend.Domain.DependencyGraphs;
+using MediatR;
 
-namespace Fend.Cli.Commands.Scan.RunDependencyScan;
+namespace Fend.Commands.Scan.RunDependencyScan;
 
-internal sealed class RunDependencyScanHandler : ICommandHandler<RunDependencyScanCommand>
+internal sealed class RunDependencyScanHandler : IRequestHandler<RunDependencyScanCommand>
 {
     private static readonly JsonSerializerOptions DefaultOptions = new()
     {
@@ -29,7 +29,7 @@ internal sealed class RunDependencyScanHandler : ICommandHandler<RunDependencySc
         _graphBuilder = graphBuilder;
     }
 
-    public async Task HandleAsync(RunDependencyScanCommand command, CancellationToken cancellationToken = default)
+    public async Task Handle(RunDependencyScanCommand command, CancellationToken cancellationToken = default)
     {
         var targetDirectory = GetScanTargetDirectory(command.Target);
         

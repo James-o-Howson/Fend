@@ -1,18 +1,18 @@
 ﻿using Cocona;
 using Cocona.Application;
-using Fend.Abstractions.Commands;
-using Fend.Cli.Commands.Scan.RunDependencyScan;
 using Fend.Cli.Validation;
+using Fend.Commands.Scan.RunDependencyScan;
+using MediatR;
 
 namespace Fend.Cli.Commands;
 
 internal sealed class ScanCommands
 {
-    private readonly ICommandHandler<RunDependencyScanCommand> _scanCommandHandler;
-
-    public ScanCommands(ICommandHandler<RunDependencyScanCommand> scanCommandHandler)
+    private readonly IMediator _mediator;
+    
+    public ScanCommands(IMediator mediator)
     {
-        _scanCommandHandler = scanCommandHandler;
+        _mediator = mediator;
     }
     
     [Command("scan", 
@@ -22,7 +22,7 @@ internal sealed class ScanCommands
         [Argument][PathExistsOrNull] string? target,
         [Option("o")] string? output)
     {
-        await _scanCommandHandler.HandleAsync(
+        await _mediator.Send(
             new RunDependencyScanCommand(target, output), 
             contextAccessor.CancellationToken());
     }
