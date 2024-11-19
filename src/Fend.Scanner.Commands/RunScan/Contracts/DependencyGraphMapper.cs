@@ -1,7 +1,6 @@
-﻿using Fend.Commands.Scan.RunDependencyScan.Contracts;
-using Fend.Scanner.Domain.Graphs;
+﻿using Fend.Scanner.Domain.Graphs;
 
-namespace Fend.Commands.Scan.RunDependencyScan;
+namespace Fend.Commands.RunScan.Contracts;
 
 public static class DependencyGraphMapper
 {

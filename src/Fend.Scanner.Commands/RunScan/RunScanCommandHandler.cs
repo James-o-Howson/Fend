@@ -1,13 +1,12 @@
 ﻿using System.Text.Json;
-using Fend.Commands.Scan.RunDependencyScan.Contracts;
-using Fend.Core.Abstractions;
+using Fend.Commands.RunScan.Contracts;
 using Fend.Core.Abstractions.Interfaces;
 using Fend.Scanner.Domain.Graphs;
 using MediatR;
 
-namespace Fend.Commands.Scan.RunDependencyScan;
+namespace Fend.Commands.RunScan;
 
-internal sealed class RunDependencyScanHandler : IRequestHandler<RunDependencyScanCommand>
+internal sealed class RunScanCommandHandler : IRequestHandler<RunScanCommand>
 {
     private static readonly JsonSerializerOptions DefaultOptions = new()
     {
@@ -20,7 +19,7 @@ internal sealed class RunDependencyScanHandler : IRequestHandler<RunDependencySc
     private readonly IFileWriter _fileWriter;
     private readonly IDependencyGraphBuilder _graphBuilder;
 
-    public RunDependencyScanHandler(IJsonSerializer serializer,
+    public RunScanCommandHandler(IJsonSerializer serializer,
         IFileWriter fileWriter, 
         IDependencyGraphBuilder graphBuilder)
     {
@@ -29,7 +28,7 @@ internal sealed class RunDependencyScanHandler : IRequestHandler<RunDependencySc
         _graphBuilder = graphBuilder;
     }
 
-    public async Task Handle(RunDependencyScanCommand command, CancellationToken cancellationToken = default)
+    public async Task Handle(RunScanCommand command, CancellationToken cancellationToken = default)
     {
         var targetDirectory = GetScanTargetDirectory(command.Target);
         

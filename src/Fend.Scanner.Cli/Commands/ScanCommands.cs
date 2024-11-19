@@ -1,7 +1,6 @@
 ﻿using Cocona;
 using Cocona.Application;
-using Fend.Commands.Scan.RunDependencyScan;
-using Fend.Scanner.Cli.Validation;
+using Fend.Commands.RunScan;
 using MediatR;
 
 namespace Fend.Scanner.Cli.Commands;
@@ -19,11 +18,11 @@ internal sealed class ScanCommands
         Aliases = ["s"], 
         Description = "Scans a project directory to construct a dependency graph")]
     public async Task Scan([FromService] ICoconaAppContextAccessor contextAccessor, 
-        [Argument][PathExistsOrNull] string? target,
+        [Argument] string? target,
         [Option("o")] string? output)
     {
         await _mediator.Send(
-            new RunDependencyScanCommand(target, output), 
+            new RunScanCommand(target, output), 
             contextAccessor.CancellationToken());
     }
 }
