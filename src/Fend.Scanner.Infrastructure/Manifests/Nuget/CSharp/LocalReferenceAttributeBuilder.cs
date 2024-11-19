@@ -16,7 +16,7 @@ internal sealed partial class LocalReferenceAttributeBuilder : ICSharpProjectMan
         return ParseProject(XDocument.Parse(projectContent));
     }
 
-    private static HashSet<DependencyItem> ParseProject(XContainer project)
+    private static HashSet<DependencyItem> ParseProject(XContainer project) 
     {
         var dependencyViewModels = project.Descendants()
             .Where(e => e.Name.LocalName == "Reference")

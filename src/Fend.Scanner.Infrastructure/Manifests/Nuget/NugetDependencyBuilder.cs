@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using Fend.Scanner.Domain.Graphs.Building;
 using Fend.Scanner.Domain.Graphs.ValueObjects;
 using Fend.Scanner.Infrastructure.Manifests.Nuget.CSharp;
+using Microsoft.Extensions.Logging;
 
 namespace Fend.Scanner.Infrastructure.Manifests.Nuget;
 
@@ -18,10 +19,12 @@ internal sealed partial class NugetDependencyBuilder : IManifestDependencyBuilde
     private const string SolutionFileSearchPattern = $"*{SolutionFileExtension}";
     
     private readonly IEnumerable<ICSharpProjectManifestBuilder> _cSharpProjectBuilders;
+    private readonly ILogger<NugetDependencyBuilder> _logger;
 
-    public NugetDependencyBuilder(IEnumerable<ICSharpProjectManifestBuilder> cSharpProjectBuilders)
+    public NugetDependencyBuilder(IEnumerable<ICSharpProjectManifestBuilder> cSharpProjectBuilders, ILogger<NugetDependencyBuilder> logger)
     {
         _cSharpProjectBuilders = cSharpProjectBuilders;
+        _logger = logger;
     }
 
     public bool IsRootDirectory(DirectoryInfo potentialProject) => 
@@ -34,10 +37,17 @@ internal sealed partial class NugetDependencyBuilder : IManifestDependencyBuilde
     public async Task<ManifestBuilderResult?> BuildAsync(FileInfo solutionFile, IBuilderContext context,
         CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("Parsing C# Solution {SolutionPath}", solutionFile.FullName);
+        
         var content = await File.ReadAllTextAsync(solutionFile.FullName, cancellationToken);
         var projectDefinitions = ExtractProjectManifests(solutionFile, content);
+
+        var manifestBuilderResult = await CreateCSharpSolutionDependencyGraphAsync(context, solutionFile, projectDefinitions, cancellationToken);
         
-        return await CreateCSharpSolutionDependencyGraphAsync(context, solutionFile, projectDefinitions, cancellationToken);
+        _logger.LogInformation("Finished Parsing C# Solution {SolutionPath}. Dependencies found = {ProjectsCount}",
+            solutionFile.FullName, manifestBuilderResult.TotalDependencies);
+        
+        return manifestBuilderResult;
     }
     
     private async Task<ManifestBuilderResult> CreateCSharpSolutionDependencyGraphAsync(IBuilderContext context,
@@ -50,18 +60,18 @@ internal sealed partial class NugetDependencyBuilder : IManifestDependencyBuilde
         {
             if (context.IsAlreadyComplete(manifest.FilePath))
             {
-                // _logger.LogInformation("Skipping CSharp Project {CsprojFilePath}. Project has already been parsed", definition.FilePath);
+                _logger.LogInformation("Skipping CSharp Project {CsprojFilePath}. Project has already been parsed", manifest.FilePath);
                 continue;
             }
             
             if (!manifest.Exists)
             {
                 context.MarkAsComplete(manifest.FilePath, null);
-                // _logger.LogInformation("Skipping CSharp Project {CsprojFilePath}. Project in Solution File but not present in Repository", definition.FilePath);
+                _logger.LogInformation("Skipping CSharp Project {CsprojFilePath}. Project in Solution File but not present in Repository", manifest.FilePath);
                 continue;
             }
             
-            // _logger.LogInformation("Parsing CSharp Project {CsprojFilePath}", definition.FilePath);
+            _logger.LogInformation("Parsing CSharp Project {CsprojFilePath}", manifest.FilePath);
 
             var projectDependencies = _cSharpProjectBuilders
                 .SelectMany(p => p.ParseAsync(manifest.Content)).ToHashSet();
@@ -73,8 +83,8 @@ internal sealed partial class NugetDependencyBuilder : IManifestDependencyBuilde
         
             result.AddDependencies(project, projectDependencies);
             
-            // _logger.LogInformation("Finished Parsing C# Project {CsprojFilePath}. Dependencies found = {DependencyCount}",
-            //     definition.FilePath, projectDescriptor.ProjectDependencies.Count);
+            _logger.LogInformation("Finished Parsing C# Project {CsprojFilePath}. Dependencies found = {DependencyCount}", 
+                manifest.FilePath, projectDependencies.Count);
             
             context.MarkAsComplete(manifest.FilePath, manifest.FileInfo);
         }

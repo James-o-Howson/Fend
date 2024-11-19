@@ -10,6 +10,8 @@ public sealed class ManifestBuilderResult
 
     public IReadOnlyDictionary<DependencyItem, HashSet<DependencyItem>> DependenciesByParent => _dependenciesByParent;
 
+    public int TotalDependencies => DependenciesByParent.Values.Aggregate(0, (total, dependency) => total + dependency.Count);
+
     public static ManifestBuilderResult Create() => new();
 
     public void AddDependencies(DependencyItem parent, IReadOnlyCollection<DependencyItem> dependencies)
