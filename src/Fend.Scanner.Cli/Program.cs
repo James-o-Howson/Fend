@@ -1,4 +1,5 @@
 ﻿using Cocona;
+using Fend.Core.Abstractions;
 using Fend.Scanner.Cli;
 using Fend.Scanner.Cli.Commands;
 using Fend.Core.Infrastructure;
@@ -8,6 +9,7 @@ var builder = CoconaApp.CreateBuilder(args);
 
 builder.Host.AddLogging();
 builder.Services.AddCli();
+builder.Services.AddCoreAbstractions();
 builder.Services.AddInfrastructure();
 builder.Services.AddDependencyGraph();
 
