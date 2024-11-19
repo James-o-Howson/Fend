@@ -11,7 +11,6 @@ internal class BuilderContext : IBuilderContext
     
     public required ConcurrentQueue<IManifestDependencyBuilder> Builders { get; init; }
     public required DirectoryInfo ProjectRootDirectory { get; init; }
-    public required CancellationToken CancellationToken { get; init; }
 
     public List<IManifestDependencyBuilder> GetBuildersForFile(string filePath) => 
         string.IsNullOrWhiteSpace(filePath) ? 
@@ -24,12 +23,10 @@ internal class BuilderContext : IBuilderContext
         _completedFiles.ContainsKey(Path.GetFullPath(path).ToLower());
 
     public static IBuilderContext Create(DirectoryInfo projectDirectory,
-        IEnumerable<IManifestDependencyBuilder> projectParsers,
-        CancellationToken cancellationToken = default) =>
+        IEnumerable<IManifestDependencyBuilder> projectParsers) =>
         new BuilderContext
         {
             ProjectRootDirectory = projectDirectory,
-            Builders = new ConcurrentQueue<IManifestDependencyBuilder>(projectParsers),
-            CancellationToken = cancellationToken
+            Builders = new ConcurrentQueue<IManifestDependencyBuilder>(projectParsers)
         };
 }

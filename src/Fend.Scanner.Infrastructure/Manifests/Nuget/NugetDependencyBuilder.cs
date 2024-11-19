@@ -31,16 +31,18 @@ internal sealed partial class NugetDependencyBuilder : IManifestDependencyBuilde
         !string.IsNullOrEmpty(potentialProjectPath) && 
         potentialProjectPath.EndsWith(potentialProjectPath);
 
-    public async Task<ManifestBuilderResult?> BuildAsync(FileInfo solutionFile, IBuilderContext context)
+    public async Task<ManifestBuilderResult?> BuildAsync(FileInfo solutionFile, IBuilderContext context,
+        CancellationToken cancellationToken = default)
     {
-        var content = await File.ReadAllTextAsync(solutionFile.FullName);
+        var content = await File.ReadAllTextAsync(solutionFile.FullName, cancellationToken);
         var projectDefinitions = ExtractProjectManifests(solutionFile, content);
         
-        return await CreateCSharpSolutionDependencyGraphAsync(context, solutionFile, projectDefinitions);
+        return await CreateCSharpSolutionDependencyGraphAsync(context, solutionFile, projectDefinitions, cancellationToken);
     }
     
-    private async Task<ManifestBuilderResult> CreateCSharpSolutionDependencyGraphAsync(IBuilderContext context, FileInfo solutionFileInfo,
-        IEnumerable<DotNetProjectManifest> projectDefinitions)
+    private async Task<ManifestBuilderResult> CreateCSharpSolutionDependencyGraphAsync(IBuilderContext context,
+        FileInfo solutionFileInfo,
+        IEnumerable<DotNetProjectManifest> projectDefinitions, CancellationToken cancellationToken)
     {
         var result = ManifestBuilderResult.Create();
         
@@ -64,7 +66,7 @@ internal sealed partial class NugetDependencyBuilder : IManifestDependencyBuilde
             var projectDependencies = _cSharpProjectBuilders
                 .SelectMany(p => p.ParseAsync(manifest.Content)).ToHashSet();
 
-            var projectId = DependencyItemId.Create(manifest.Name, await GetDotNetVersionAsync(manifest.Content));
+            var projectId = DependencyItemId.Create(manifest.Name, await GetDotNetVersionAsync(manifest.Content, cancellationToken));
             var project = DependencyItem.Create(projectId,
                 DependencyType.Project,
                 GetMetadata(manifest, solutionFileInfo)); 
@@ -103,9 +105,9 @@ internal sealed partial class NugetDependencyBuilder : IManifestDependencyBuilde
         return projectDefinitions;
     }
     
-    private static async Task<string> GetDotNetVersionAsync(string csprojContent)
+    private static async Task<string> GetDotNetVersionAsync(string csprojContent, CancellationToken cancellationToken)
     {
-        var document = await XDocument.LoadAsync(new StringReader(csprojContent), LoadOptions.None, CancellationToken.None);
+        var document = await XDocument.LoadAsync(new StringReader(csprojContent), LoadOptions.None, cancellationToken);
 
         string[] versionElements =
         [

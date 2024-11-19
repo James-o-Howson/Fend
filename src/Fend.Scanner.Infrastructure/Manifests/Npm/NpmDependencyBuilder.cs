@@ -23,14 +23,15 @@ internal sealed class NpmDependencyBuilder : IManifestDependencyBuilder
     public bool IsManifest(string potentialProjectPath) =>
         !string.IsNullOrWhiteSpace(potentialProjectPath) && IsNodeManifest(potentialProjectPath);
 
-    public async Task<ManifestBuilderResult?> BuildAsync(FileInfo projectFile, IBuilderContext context)
+    public async Task<ManifestBuilderResult?> BuildAsync(FileInfo projectFile, IBuilderContext context,
+        CancellationToken cancellationToken = default)
     {
         if (context.IsAlreadyComplete(projectFile.FullName)) return null;
         
-        var content = await File.ReadAllTextAsync(projectFile.FullName);
+        var content = await File.ReadAllTextAsync(projectFile.FullName, cancellationToken);
         var nodeManifest = await JsonSerializer.DeserializeAsync<NodeManifest>(
             new MemoryStream(Encoding.UTF8.GetBytes(content)),
-            JsonSerializerOptions);
+            JsonSerializerOptions, cancellationToken);
         
         if (nodeManifest is null) throw new ArgumentException($"Cannot deserialize {nameof(content)} into ${typeof(NodeManifest)}", content);
         var relativePath = projectFile.RelativeTo(context.ProjectRootDirectory);

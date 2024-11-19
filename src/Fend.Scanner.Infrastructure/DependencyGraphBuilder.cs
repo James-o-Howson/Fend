@@ -20,7 +20,7 @@ internal sealed class DependencyGraphBuilder : IDependencyGraphBuilder
         CancellationToken cancellationToken = default)
     {
         var dependencyGraph = InitDependencyGraph(projectDirectory);
-        var context = BuilderContext.Create(projectDirectory, _projectBuilders, cancellationToken);
+        var context = BuilderContext.Create(projectDirectory, _projectBuilders);
         
         foreach (var filePath in GetAllProjectFiles(projectDirectory))
         {
@@ -32,7 +32,7 @@ internal sealed class DependencyGraphBuilder : IDependencyGraphBuilder
             
             foreach (var builder in matchingBuilders)
             {
-                var result = await builder.BuildAsync(projectFileInfo, context);
+                var result = await builder.BuildAsync(projectFileInfo, context, cancellationToken);
                 if(result is null) continue;
                 
                 UpdateDependencyGraph(dependencyGraph, result);
