@@ -1,4 +1,6 @@
 ﻿using Fend.Commands;
+using Fend.Core.Abstractions.Behaviours;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -12,6 +14,10 @@ internal static class ServiceConfiguration
         services.AddMediatR(configurator =>
         {
             configurator.RegisterServicesFromAssemblies(CommandsAssembly.Assembly);
+            
+            configurator.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
+            configurator.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            configurator.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         });
     }
     
