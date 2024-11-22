@@ -1,18 +1,20 @@
 ﻿using System.Xml.Linq;
-using Fend.Scanner.Domain.Graphs.ValueObjects;
+using Fend.Domain.Dependencies;
+using Fend.Domain.Dependencies.ValueObjects;
+using Fend.Domain.Dependencies.ValueObjects.Ids;
 
 namespace Fend.Scanner.Infrastructure.Manifests.Nuget.CSharp;
 
 internal sealed class NugetPackageReferenceAttributeBuilder : ICSharpProjectManifestBuilder
 {
-    public HashSet<DependencyItem> ParseAsync(string projectContent)
+    public HashSet<Dependency> ParseAsync(string projectContent)
     {
         ArgumentException.ThrowIfNullOrEmpty(projectContent);
         
         return ParseProject(XDocument.Parse(projectContent));
     }
 
-    private static HashSet<DependencyItem> ParseProject(XContainer projectContainer)
+    private static HashSet<Dependency> ParseProject(XContainer projectContainer)
     {
         var projectDependencies = projectContainer.Descendants()
             .Where(e => e.Name.LocalName == "PackageReference")
@@ -27,8 +29,8 @@ internal sealed class NugetPackageReferenceAttributeBuilder : ICSharpProjectMani
                     versionValue = pr.Attribute("Version")?.Value.Trim() ?? string.Empty;
                 }
         
-                var id = DependencyItemId.Create(dependencyName, versionValue);
-                return DependencyItem.Create(id, DependencyType.NuGet);
+                var id = DependencyId.Create(dependencyName, versionValue);
+                return Dependency.Create(id, DependencyType.NuGet);
             });
         
         return projectDependencies.ToHashSet();

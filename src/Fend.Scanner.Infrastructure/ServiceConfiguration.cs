@@ -1,5 +1,5 @@
-﻿using Fend.Scanner.Domain.Graphs;
-using Fend.Scanner.Domain.Graphs.Building;
+﻿using Fend.Domain.Dependencies;
+using Fend.Domain.Dependencies.Building;
 using Fend.Scanner.Infrastructure.Manifests.Npm;
 using Fend.Scanner.Infrastructure.Manifests.Nuget.CSharp;
 using Microsoft.Extensions.DependencyInjection;

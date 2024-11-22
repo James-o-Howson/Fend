@@ -1,23 +1,23 @@
-﻿using Fend.Scanner.Domain.Graphs;
+﻿using Fend.Domain.Dependencies;
 
 namespace Fend.Commands.RunScan.Contracts;
 
 public static class DependencyGraphMapper
 {
     public static DependencyDto ToDto(this DependencyGraph dependencyGraph) => 
-        GetDependencyDto(dependencyGraph.RootNode);
+        GetDependencyDto(dependencyGraph.Root);
 
-    private static List<DependencyDto> GetDependencies(DependencyNode dependencyNode) =>
-        dependencyNode.Dependencies
+    private static List<DependencyDto> GetDependencies(Dependency dependency) =>
+        dependency.Dependencies
             .Select(GetDependencyDto)
             .ToList();
 
-    private static DependencyDto GetDependencyDto(DependencyNode d) => 
+    private static DependencyDto GetDependencyDto(Dependency d) => 
         new(GetName(d), GetVersion(d), GetDependencies(d));
 
-    private static string GetName(DependencyNode dependencyNode) => 
-        dependencyNode.DependencyItem.Id.Name;
+    private static string GetName(Dependency dependency) => 
+        dependency.Id.Name;
     
-    private static string GetVersion(DependencyNode dependencyNode) => 
-        dependencyNode.DependencyItem.Id.Version;
+    private static string GetVersion(Dependency dependency) => 
+        dependency.Id.Version;
 }

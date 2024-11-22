@@ -1,7 +1,8 @@
-﻿using Fend.Scanner.Domain.Graphs;
-using Fend.Scanner.Domain.Graphs.Building;
-using Fend.Scanner.Domain.Graphs.ValueObjects;
-using DepGraph = Fend.Scanner.Domain.Graphs.DependencyGraph;
+﻿using Fend.Domain.Dependencies;
+using Fend.Domain.Dependencies.Building;
+using Fend.Domain.Dependencies.ValueObjects;
+using Fend.Domain.Dependencies.ValueObjects.Ids;
+using DepGraph = Fend.Domain.Dependencies.DependencyGraph;
 
 namespace Fend.Scanner.Infrastructure;
 
@@ -46,15 +47,15 @@ internal sealed class DependencyGraphBuilder : IDependencyGraphBuilder
     {
         foreach (var (parent, dependencies) in result.DependenciesByParent)
         {
-            var projectNode = dependencyGraph.AddNode(parent, dependencyGraph.RootNode);
+            var projectNode = dependencyGraph.AddNode(parent, dependencyGraph.Root);
             dependencyGraph.AddNodes(dependencies, projectNode);
         }
     }
 
     private static DepGraph InitDependencyGraph(DirectoryInfo projectDirectory)
     {
-        var id = DependencyItemId.Create(projectDirectory.Name);
-        var rootNode = DependencyItem.Create(id, DependencyType.Project);
+        var id = DependencyId.Create(projectDirectory.Name);
+        var rootNode = Dependency.Create(id, DependencyType.Project);
         
         return new DepGraph(rootNode);
     }

@@ -1,7 +1,9 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Fend.Scanner.Domain.Graphs.Building;
-using Fend.Scanner.Domain.Graphs.ValueObjects;
+using Fend.Domain.Dependencies;
+using Fend.Domain.Dependencies.Building;
+using Fend.Domain.Dependencies.ValueObjects;
+using Fend.Domain.Dependencies.ValueObjects.Ids;
 using Fend.Scanner.Infrastructure.Manifests.Nuget.CSharp;
 using Microsoft.Extensions.Logging;
 
@@ -76,8 +78,8 @@ internal sealed partial class NugetDependencyBuilder : IManifestDependencyBuilde
             var projectDependencies = _cSharpProjectBuilders
                 .SelectMany(p => p.ParseAsync(manifest.Content)).ToHashSet();
 
-            var projectId = DependencyItemId.Create(manifest.Name, await GetDotNetVersionAsync(manifest.Content, cancellationToken));
-            var project = DependencyItem.Create(projectId,
+            var projectId = DependencyId.Create(manifest.Name, await GetDotNetVersionAsync(manifest.Content, cancellationToken));
+            var project = Dependency.Create(projectId,
                 DependencyType.Project,
                 GetMetadata(manifest, solutionFileInfo)); 
         

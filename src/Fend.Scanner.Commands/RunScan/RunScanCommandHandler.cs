@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Fend.Commands.RunScan.Contracts;
-using Fend.Core.Abstractions.Interfaces;
-using Fend.Scanner.Domain.Graphs;
+using Fend.Abstractions.Interfaces;
+using Fend.Domain.Dependencies;
 using MediatR;
 
 namespace Fend.Commands.RunScan;

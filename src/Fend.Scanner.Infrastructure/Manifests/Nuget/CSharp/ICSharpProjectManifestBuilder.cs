@@ -1,8 +1,8 @@
-﻿using Fend.Scanner.Domain.Graphs.ValueObjects;
+﻿using Fend.Domain.Dependencies;
 
 namespace Fend.Scanner.Infrastructure.Manifests.Nuget.CSharp;
 
 internal interface ICSharpProjectManifestBuilder
 {
-    HashSet<DependencyItem> ParseAsync(string projectContent);
+    HashSet<Dependency> ParseAsync(string projectContent);
 }

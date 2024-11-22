@@ -12,8 +12,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Fend.Core.Abstractions\Fend.Core.Abstractions.csproj" />
-      <ProjectReference Include="..\Fend.Scanner.Domain\Fend.Scanner.Domain.csproj" />
+      <ProjectReference Include="..\Fend.Abstractions\Fend.Abstractions.csproj" />
+      <ProjectReference Include="..\Fend.Domain\Fend.Domain.csproj" />
     </ItemGroup>
 
 </Project>

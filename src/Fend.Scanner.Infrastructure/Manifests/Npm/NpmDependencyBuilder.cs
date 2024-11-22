@@ -1,7 +1,9 @@
 ﻿using System.Text;
 using System.Text.Json;
-using Fend.Scanner.Domain.Graphs.Building;
-using Fend.Scanner.Domain.Graphs.ValueObjects;
+using Fend.Domain.Dependencies;
+using Fend.Domain.Dependencies.Building;
+using Fend.Domain.Dependencies.ValueObjects;
+using Fend.Domain.Dependencies.ValueObjects.Ids;
 
 namespace Fend.Scanner.Infrastructure.Manifests.Npm;
 
@@ -37,8 +39,8 @@ internal sealed class NpmDependencyBuilder : IManifestDependencyBuilder
         var relativePath = projectFile.RelativeTo(context.ProjectRootDirectory);
         
         // Todo: Get Version from Angular manifest, not Node manifest
-        var project = DependencyItem.Create(
-            DependencyItemId.Create(nodeManifest.Name, nodeManifest.Version), 
+        var project = Dependency.Create(
+            DependencyId.Create(nodeManifest.Name, nodeManifest.Version), 
             DependencyType.Project,
             new Dictionary<string, string> { { "Path", relativePath } });
 
@@ -50,7 +52,7 @@ internal sealed class NpmDependencyBuilder : IManifestDependencyBuilder
         return result;
     }
     
-    private static List<DependencyItem> GetAllNodeDependencies(NodeManifest nodeManifest)
+    private static List<Dependency> GetAllNodeDependencies(NodeManifest nodeManifest)
     {
         var dependencies = nodeManifest.Dependencies
             .Select(entry => CreateDependency(entry.Key, entry.Value, "production"))
@@ -64,15 +66,15 @@ internal sealed class NpmDependencyBuilder : IManifestDependencyBuilder
         return dependencies;
     }
 
-    private static DependencyItem CreateDependency(string dependencyName, string? version, string environment)
+    private static Dependency CreateDependency(string dependencyName, string? version, string environment)
     {
         if (dependencyName.Length > 0 && dependencyName[0] == '@')
         {
             dependencyName = dependencyName[1..];
         }
 
-        var packageInfo = DependencyItem.Create(
-            DependencyItemId.Create(dependencyName, version ?? string.Empty), 
+        var packageInfo = Dependency.Create(
+            DependencyId.Create(dependencyName, version ?? string.Empty), 
             DependencyType.Npm,
             new Dictionary<string, string> { { "Environment", environment } });
         

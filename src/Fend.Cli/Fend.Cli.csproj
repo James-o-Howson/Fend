@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseAppHost>true</UseAppHost>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Cocona" Version="2.2.0"/>
+        <PackageReference Include="MediatR" Version="12.4.1"/>
+        <PackageReference Include="Serilog" Version="4.1.0"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.3"/>
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Fend.Scanner.Commands\Fend.Scanner.Commands.csproj"/>
+        <ProjectReference Include="..\Fend.Scanner.Infrastructure\Fend.Scanner.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Fend.Infrastructure\Fend.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Fend.ServiceDefaults\Fend.ServiceDefaults.csproj" />
+    </ItemGroup>
+
+</Project>

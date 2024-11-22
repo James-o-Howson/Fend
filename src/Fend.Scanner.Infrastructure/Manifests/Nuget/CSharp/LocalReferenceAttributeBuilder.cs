@@ -1,6 +1,8 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Fend.Scanner.Domain.Graphs.ValueObjects;
+using Fend.Domain.Dependencies;
+using Fend.Domain.Dependencies.ValueObjects;
+using Fend.Domain.Dependencies.ValueObjects.Ids;
 
 namespace Fend.Scanner.Infrastructure.Manifests.Nuget.CSharp;
 
@@ -9,14 +11,14 @@ internal sealed partial class LocalReferenceAttributeBuilder : ICSharpProjectMan
     [GeneratedRegex(@"\d+(?:\.\d+)+")]
     private static partial Regex VersionRegex();
     
-    public HashSet<DependencyItem> ParseAsync(string projectContent)
+    public HashSet<Dependency> ParseAsync(string projectContent)
     {
         ArgumentException.ThrowIfNullOrEmpty(projectContent);
         
         return ParseProject(XDocument.Parse(projectContent));
     }
 
-    private static HashSet<DependencyItem> ParseProject(XContainer project) 
+    private static HashSet<Dependency> ParseProject(XContainer project) 
     {
         var dependencyViewModels = project.Descendants()
             .Where(e => e.Name.LocalName == "Reference")
@@ -48,8 +50,8 @@ internal sealed partial class LocalReferenceAttributeBuilder : ICSharpProjectMan
                     }
                 }
                 
-                var id = DependencyItemId.Create(dependencyName, versionValue);
-                return DependencyItem.Create(id, DependencyType.Local);
+                var id = DependencyId.Create(dependencyName, versionValue);
+                return Dependency.Create(id, DependencyType.Local);
             });
         
         return dependencyViewModels.ToHashSet();
