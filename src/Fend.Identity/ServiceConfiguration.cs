@@ -1,5 +1,9 @@
-﻿using Fend.Identity.Data;
+﻿using Fend.Application.Behaviours;
+using Fend.Identity.Commands;
+using Fend.Identity.Data;
+using Fend.Infrastructure.Data;
 using Fend.Infrastructure.Options;
+using MediatR;
 using Microsoft.AspNetCore.DataProtection;
 using OpenIddict.Validation.AspNetCore;
 
@@ -7,7 +11,26 @@ namespace Fend.Identity;
 
 internal static class ServiceConfiguration
 {
-    public static void AddOpenIddict(this IServiceCollection services, IConfiguration configuration)
+    public static void AddIdentity(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddAuth(configuration);
+        services.AddMediatr();
+        services.AddDatabase<IIdentityDbContext, IdentityDbContext>();
+    }
+    
+    private static void AddMediatr(this IServiceCollection services)
+    {
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblies(CommandsAssembly.Assembly);
+            
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
+        });
+    }
+    
+    private static void AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddAuthentication(options =>
         {
@@ -30,6 +53,7 @@ internal static class ServiceConfiguration
                     .AllowRefreshTokenFlow();
                 
                 options.AddDevelopmentSigningCertificate();
+                options.AddDevelopmentEncryptionCertificate();
                 
                 options.UseAspNetCore()
                     .EnableAuthorizationEndpointPassthrough();

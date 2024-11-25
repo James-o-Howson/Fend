@@ -1,11 +1,19 @@
-﻿using Fend.Infrastructure.Data;
+﻿using Fend.Core.SharedKernel.Abstractions;
+using Fend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fend.Identity.Data;
 
-public sealed class IdentityDbContext : ModuleDbContext
+public interface IIdentityDbContext : IUnitOfWork
 {
-    public IdentityDbContext(DbContextOptions<IdentityDbContext> options, string schema) : base(options, schema)
+}
+
+public sealed class IdentityDbContext : ModuleDbContext, IIdentityDbContext
+{
+    private const string Schema = "Identity";
+    
+    public IdentityDbContext(DbContextOptions<IdentityDbContext> options) 
+        : base(options, Schema)
     {
     }
 }

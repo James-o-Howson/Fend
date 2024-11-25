@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MediatR" Version="12.4.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11"/>
         <PackageReference Include="OpenIddict.AspNetCore" Version="5.8.0"/>
         <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="5.8.0" />
@@ -29,6 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Fend.Identity.Commands\Fend.Identity.Commands.csproj" />
       <ProjectReference Include="..\Fend.Identity.Data\Fend.Identity.Data.csproj" />
       <ProjectReference Include="..\Fend.ServiceDefaults\Fend.ServiceDefaults.csproj" />
     </ItemGroup>

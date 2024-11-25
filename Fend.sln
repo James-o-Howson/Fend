@@ -66,6 +66,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".database", ".database", "{
 		.database\rebaseline-and-reset-db.sh = .database\rebaseline-and-reset-db.sh
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fend.Identity.Commands", "src\Fend.Identity.Commands\Fend.Identity.Commands.csproj", "{93811CF2-6D88-4C19-B60A-73680AAF8D6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -136,6 +138,10 @@ Global
 		{8D57447D-9B78-4436-8458-7E2D6078F4AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D57447D-9B78-4436-8458-7E2D6078F4AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D57447D-9B78-4436-8458-7E2D6078F4AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93811CF2-6D88-4C19-B60A-73680AAF8D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93811CF2-6D88-4C19-B60A-73680AAF8D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93811CF2-6D88-4C19-B60A-73680AAF8D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93811CF2-6D88-4C19-B60A-73680AAF8D6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{33931ED9-188C-4A06-A028-6EBBAB9538AA} = {18457D79-BF09-4C13-ABA1-1A2EB9CA5103}
@@ -162,5 +168,6 @@ Global
 		{DA0DCCB8-A7C8-48DC-98FB-8B3C6EC4B9B3} = {6E6F9416-F93F-49E5-98D8-34A3FD6DC926}
 		{8D57447D-9B78-4436-8458-7E2D6078F4AB} = {6E6F9416-F93F-49E5-98D8-34A3FD6DC926}
 		{8AC13CC1-E3DF-4E63-BCA0-02AA112A6DF6} = {185F4E8D-E25A-4696-86FB-33C474B01ADB}
+		{93811CF2-6D88-4C19-B60A-73680AAF8D6F} = {41F3EEE2-D10B-496B-BDB7-BEC73DBFF4A4}
 	EndGlobalSection
 EndGlobal
