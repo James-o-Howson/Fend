@@ -1,4 +1,4 @@
-﻿using Fend.Data;
+﻿using Fend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fend.Identity.Data;

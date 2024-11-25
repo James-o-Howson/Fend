@@ -32,13 +32,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Fend.Abstractions\Fend.Abstractions.csproj" />
-      <ProjectReference Include="..\Fend.Dependencies.Commands\Fend.Dependencies.Commands.csproj" />
+      <ProjectReference Include="..\Fend.Application.Contracts\Fend.Application.Contracts.csproj" />
+      <ProjectReference Include="..\Fend.Application\Fend.Application.csproj" />
+      <ProjectReference Include="..\Fend.Dependencies.Application\Fend.Dependencies.Application.csproj" />
+      <ProjectReference Include="..\Fend.Dependencies.Data\Fend.Dependencies.Data.csproj" />
       <ProjectReference Include="..\Fend.ServiceDefaults\Fend.ServiceDefaults.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Infrastructure\" />
     </ItemGroup>
 
 </Project>

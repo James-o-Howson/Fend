@@ -9,8 +9,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Fend.Abstractions\Fend.Abstractions.csproj" />
-      <ProjectReference Include="..\Fend.Domain\Fend.Domain.csproj" />
+      <ProjectReference Include="..\Fend.Application.Contracts\Fend.Application.Contracts.csproj" />
+      <ProjectReference Include="..\Fend.Application\Fend.Application.csproj" />
+      <ProjectReference Include="..\Fend.Core.Domain\Fend.Core.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>

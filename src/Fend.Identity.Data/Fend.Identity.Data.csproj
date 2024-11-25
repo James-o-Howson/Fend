@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Fend.Data\Fend.Data.csproj" />
+      <ProjectReference Include="..\Fend.Infrastructure.Data\Fend.Infrastructure.Data.csproj" />
     </ItemGroup>
 
 </Project>

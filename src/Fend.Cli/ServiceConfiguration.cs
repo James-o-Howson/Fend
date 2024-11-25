@@ -1,5 +1,5 @@
-﻿using Fend.Abstractions;
-using Fend.Abstractions.Behaviours;
+﻿using Fend.Application;
+using Fend.Application.Behaviours;
 using Fend.Commands;
 using Fend.Infrastructure;
 using Fend.Scanner.Infrastructure;
@@ -12,7 +12,7 @@ internal static class ServiceConfiguration
 {
     public static void AddCliServices(this IServiceCollection services)
     {
-        services.AddCoreAbstractions();
+        services.AddApplication();
         services.AddInfrastructure();
         services.AddDependencyGraph();
         

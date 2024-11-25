@@ -1,10 +1,12 @@
-﻿using Fend.Abstractions.Interfaces;
+﻿using Fend.Application.Interfaces;
+using Fend.Core.SharedKernel.Abstractions;
 using Fend.Infrastructure.Services;
-using Fend.SharedKernel.Abstractions;
+using Fend.Infrastructure.Web;
 using Microsoft.Extensions.DependencyInjection;
-using DateTime = Fend.Infrastructure.Services.DateTime;
 
 namespace Fend.Infrastructure;
+
+using DateTime = Services.DateTime;
 
 public static class ServiceConfiguration
 {
@@ -13,5 +15,6 @@ public static class ServiceConfiguration
         services.AddTransient<IFileWriter, FileWriter>();
         services.AddTransient<IJsonSerializer, JsonSerializer>();
         services.AddTransient<IDateTime, DateTime>();
+        services.AddScoped<IUser, CurrentUser>();
     }
 }

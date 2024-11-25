@@ -12,8 +12,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Fend.Data\Fend.Data.csproj" />
-      <ProjectReference Include="..\Fend.Domain\Fend.Domain.csproj" />
+      <ProjectReference Include="..\Fend.Dependencies.Application\Fend.Dependencies.Application.csproj" />
+      <ProjectReference Include="..\Fend.Infrastructure.Data\Fend.Infrastructure.Data.csproj" />
+      <ProjectReference Include="..\Fend.Core.Domain\Fend.Core.Domain.csproj" />
     </ItemGroup>
 
 </Project>

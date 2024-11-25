@@ -1,7 +1,7 @@
 ﻿using System.Xml.Linq;
-using Fend.Domain.Dependencies;
-using Fend.Domain.Dependencies.ValueObjects;
-using Fend.Domain.Dependencies.ValueObjects.Ids;
+using Fend.Core.Domain.Dependencies;
+using Fend.Core.Domain.Dependencies.ValueObjects;
+using Fend.Core.Domain.Dependencies.ValueObjects.Ids;
 
 namespace Fend.Scanner.Infrastructure.Manifests.Nuget.CSharp;
 

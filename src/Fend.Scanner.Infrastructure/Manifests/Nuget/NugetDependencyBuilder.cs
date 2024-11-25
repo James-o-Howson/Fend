@@ -1,9 +1,9 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Fend.Domain.Dependencies;
-using Fend.Domain.Dependencies.Building;
-using Fend.Domain.Dependencies.ValueObjects;
-using Fend.Domain.Dependencies.ValueObjects.Ids;
+using Fend.Core.Domain.Dependencies;
+using Fend.Core.Domain.Dependencies.Building;
+using Fend.Core.Domain.Dependencies.ValueObjects;
+using Fend.Core.Domain.Dependencies.ValueObjects.Ids;
 using Fend.Scanner.Infrastructure.Manifests.Nuget.CSharp;
 using Microsoft.Extensions.Logging;
 

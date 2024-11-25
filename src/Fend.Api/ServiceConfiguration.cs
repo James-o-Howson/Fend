@@ -1,7 +1,8 @@
-﻿using Fend.Api.Services;
-using Fend.Abstractions.Behaviours;
-using Fend.Abstractions.Interfaces;
-using Fend.Dependencies.Commands;
+﻿using Fend.Application.Behaviours;
+using Fend.Dependencies.Application;
+using Fend.Dependencies.Application.Abstractions;
+using Fend.Dependencies.Data;
+using Fend.Infrastructure.Data;
 using FluentValidation;
 using MediatR;
 
@@ -13,8 +14,7 @@ internal static class ServiceConfiguration
     {
         services.AddMediatr();
         services.AddValidatorsFromAssemblies([CommandsAssembly.Assembly]);
-
-        services.AddScoped<IUser, CurrentUser>();
+        services.AddDatabase<IDependenciesDbContext, DependenciesDbContext>();
     }
     
     private static void AddMediatr(this IServiceCollection services)

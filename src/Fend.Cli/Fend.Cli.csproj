@@ -19,7 +19,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Fend.Scanner.Commands\Fend.Scanner.Commands.csproj"/>
         <ProjectReference Include="..\Fend.Scanner.Infrastructure\Fend.Scanner.Infrastructure.csproj"/>
-        <ProjectReference Include="..\Fend.Infrastructure\Fend.Infrastructure.csproj"/>
+        <ProjectReference Include="..\Fend.Infrastructure\Fend.Infrastructure.csproj" />
         <ProjectReference Include="..\Fend.ServiceDefaults\Fend.ServiceDefaults.csproj" />
     </ItemGroup>
 

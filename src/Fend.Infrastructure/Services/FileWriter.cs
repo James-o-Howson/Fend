@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using Fend.Abstractions.Interfaces;
+using Fend.Application.Interfaces;
 
 namespace Fend.Infrastructure.Services;
 

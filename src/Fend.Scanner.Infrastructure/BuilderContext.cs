@@ -1,5 +1,5 @@
 using System.Collections.Concurrent;
-using Fend.Domain.Dependencies.Building;
+using Fend.Core.Domain.Dependencies.Building;
 
 namespace Fend.Scanner.Infrastructure;
 

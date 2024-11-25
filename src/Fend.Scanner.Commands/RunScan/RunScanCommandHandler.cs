@@ -1,10 +1,13 @@
 ﻿using System.Text.Json;
+using Fend.Application.Contracts.Dependencies;
+using Fend.Application.Interfaces;
 using Fend.Commands.RunScan.Contracts;
-using Fend.Abstractions.Interfaces;
-using Fend.Domain.Dependencies;
+using Fend.Core.Domain.Dependencies;
 using MediatR;
 
 namespace Fend.Commands.RunScan;
+
+public record RunScanCommand(string? Target, string? OutputPath) : IRequest;
 
 internal sealed class RunScanCommandHandler : IRequestHandler<RunScanCommand>
 {

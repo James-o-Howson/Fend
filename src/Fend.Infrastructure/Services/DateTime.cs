@@ -1,4 +1,4 @@
-﻿using Fend.SharedKernel.Abstractions;
+﻿using Fend.Core.SharedKernel.Abstractions;
 
 namespace Fend.Infrastructure.Services;
 

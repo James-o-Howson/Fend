@@ -270,7 +270,7 @@ ServiceFabricBackup/
 # Sqlite files
 *.db-shm
 *.db-wal
-RepoRanger*.db
+Fend*.db
 
 # Business Intelligence projects
 *.rdl.data

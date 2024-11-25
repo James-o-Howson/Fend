@@ -1,4 +1,4 @@
-﻿using Fend.Domain.Dependencies;
+﻿using Fend.Core.Domain.Dependencies;
 
 namespace Fend.Scanner.Infrastructure.Manifests.Nuget.CSharp;
 

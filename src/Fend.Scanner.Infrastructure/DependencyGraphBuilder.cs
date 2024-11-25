@@ -1,8 +1,8 @@
-﻿using Fend.Domain.Dependencies;
-using Fend.Domain.Dependencies.Building;
-using Fend.Domain.Dependencies.ValueObjects;
-using Fend.Domain.Dependencies.ValueObjects.Ids;
-using DepGraph = Fend.Domain.Dependencies.DependencyGraph;
+﻿using Fend.Core.Domain.Dependencies;
+using Fend.Core.Domain.Dependencies.Building;
+using Fend.Core.Domain.Dependencies.ValueObjects;
+using Fend.Core.Domain.Dependencies.ValueObjects.Ids;
+using DepGraph = Fend.Core.Domain.Dependencies.DependencyGraph;
 
 namespace Fend.Scanner.Infrastructure;
 

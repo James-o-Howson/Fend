@@ -1,6 +1,7 @@
 ﻿using Cocona;
 using Cocona.Application;
 using Fend.Commands.RunScan;
+using Fend.Commands.RunScan.Contracts;
 using MediatR;
 
 namespace Fend.Cli.Commands;

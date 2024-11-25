@@ -1,4 +1,4 @@
-﻿using Fend.Abstractions.Exceptions;
+﻿using Fend.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

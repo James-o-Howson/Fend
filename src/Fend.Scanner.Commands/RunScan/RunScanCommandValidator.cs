@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Fend.Commands.RunScan.Contracts;
+using FluentValidation;
 
 namespace Fend.Commands.RunScan;
 
