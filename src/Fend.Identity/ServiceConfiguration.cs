@@ -1,11 +1,19 @@
 ﻿using Fend.Application.Behaviours;
-using Fend.Identity.Commands;
+using Fend.Core.SharedKernel.Abstractions;
+using Fend.Identity.Application;
+using Fend.Identity.Application.Abstractions;
 using Fend.Identity.Data;
 using Fend.Infrastructure.Data;
+using Fend.Infrastructure.Data.Interceptors;
 using Fend.Infrastructure.Options;
 using MediatR;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Options;
 using OpenIddict.Validation.AspNetCore;
+using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace Fend.Identity;
 
@@ -15,7 +23,11 @@ internal static class ServiceConfiguration
     {
         services.AddAuth(configuration);
         services.AddMediatr();
-        services.AddDatabase<IIdentityDbContext, IdentityDbContext>();
+        services.AddDatabase();
+        services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<IdentityContext>()
+            .AddDefaultTokenProviders()
+            .AddDefaultUI();
     }
     
     private static void AddMediatr(this IServiceCollection services)
@@ -41,22 +53,31 @@ internal static class ServiceConfiguration
             .AddCore(options =>
             {
                 options.UseEntityFrameworkCore()
-                    .UseDbContext<IdentityDbContext>();
+                    .UseDbContext<IdentityContext>();
             })
             .AddServer(options =>
             {
-                options.SetAuthorizationEndpointUris("authorize")
-                    .SetIntrospectionEndpointUris("introspect")
-                    .SetTokenEndpointUris("token");
+                options.SetAuthorizationEndpointUris("connect/authorize")
+                    .SetVerificationEndpointUris("connect/verify")
+                    .SetDeviceEndpointUris("connect/device")
+                    .SetIntrospectionEndpointUris("connect/introspect")
+                    .SetTokenEndpointUris("connect/token");
+                
+                // Mark the "email", "profile" and "roles" scopes as supported scopes.
+                options.RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles);
                 
                 options.AllowAuthorizationCodeFlow()
-                    .AllowRefreshTokenFlow();
+                    .AllowRefreshTokenFlow()
+                    .AllowDeviceCodeFlow();
                 
                 options.AddDevelopmentSigningCertificate();
                 options.AddDevelopmentEncryptionCertificate();
                 
                 options.UseAspNetCore()
-                    .EnableAuthorizationEndpointPassthrough();
+                    .EnableAuthorizationEndpointPassthrough()
+                    .EnableTokenEndpointPassthrough()
+                    .EnableVerificationEndpointPassthrough()
+                    .EnableStatusCodePagesIntegration();
             })
             .AddValidation(options =>
             {
@@ -67,6 +88,25 @@ internal static class ServiceConfiguration
                 var identityOptions = configuration.TryLoad<IdentityOptions>();
                 options.SetIssuer(identityOptions.Url);
             });
+    }
+
+    private static void AddDatabase(this IServiceCollection services)
+    {
+        services.AddScoped<ISaveChangesInterceptor, AuditableEntitySaveChangesInterceptor>();
+        services.AddScoped<ISaveChangesInterceptor, DomainEventsSaveChangesInterceptor>();
+        
+        services.AddDbContext<IdentityContext>((sp, options) =>
+        {
+            var databaseOptions = sp.GetRequiredService<IOptions<DatabaseOptions>>().Value;
+            
+            options.UseSqlite(databaseOptions.ConnectionString).LogTo(Console.WriteLine, LogLevel.Information);
+            options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
+
+            options.UseOpenIddict();
+        });
+
+        services.AddScoped<IIdentityDbContext>(provider => provider.GetRequiredService<IdentityContext>());
+        services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<IdentityContext>());
     }
     
     private static void UseDataProtection(this OpenIddictValidationBuilder builder, string applicationDiscriminator) 

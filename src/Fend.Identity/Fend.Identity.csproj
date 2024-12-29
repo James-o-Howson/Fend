@@ -8,10 +8,11 @@
 
     <ItemGroup>
         <PackageReference Include="MediatR" Version="12.4.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11"/>
         <PackageReference Include="OpenIddict.AspNetCore" Version="5.8.0"/>
         <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="5.8.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.1.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -30,13 +31,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Fend.Identity.Commands\Fend.Identity.Commands.csproj" />
+      <ProjectReference Include="..\Fend.Identity.Application\Fend.Identity.Application.csproj" />
       <ProjectReference Include="..\Fend.Identity.Data\Fend.Identity.Data.csproj" />
       <ProjectReference Include="..\Fend.ServiceDefaults\Fend.ServiceDefaults.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Controllers\" />
     </ItemGroup>
 
 </Project>

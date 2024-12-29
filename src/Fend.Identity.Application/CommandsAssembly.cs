@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Fend.Identity.Commands;
+namespace Fend.Identity.Application;
 
 public static class CommandsAssembly
 {

@@ -66,7 +66,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".database", ".database", "{
 		.database\rebaseline-and-reset-db.sh = .database\rebaseline-and-reset-db.sh
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fend.Identity.Commands", "src\Fend.Identity.Commands\Fend.Identity.Commands.csproj", "{93811CF2-6D88-4C19-B60A-73680AAF8D6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fend.Identity.Application", "src\Fend.Identity.Application\Fend.Identity.Application.csproj", "{93811CF2-6D88-4C19-B60A-73680AAF8D6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

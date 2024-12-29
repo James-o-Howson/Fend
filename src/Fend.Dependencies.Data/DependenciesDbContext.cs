@@ -1,12 +1,11 @@
 ﻿using System.Reflection;
 using Fend.Core.Domain.Dependencies;
 using Fend.Dependencies.Application.Abstractions;
-using Fend.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fend.Dependencies.Data;
 
-public sealed class DependenciesDbContext : ModuleDbContext, IDependenciesDbContext
+public sealed class DependenciesDbContext : DbContext, IDependenciesDbContext
 {
     private const string Schema = "Dependencies";
 
@@ -15,14 +14,15 @@ public sealed class DependenciesDbContext : ModuleDbContext, IDependenciesDbCont
     public DbSet<DependencyGraph> DependencyGraphs { get; set; }
     
     public DependenciesDbContext(DbContextOptions<DependenciesDbContext> options) 
-        : base(options, Schema)
+        : base(options)
     {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
-        
+        modelBuilder.HasDefaultSchema(Schema);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        
+        base.OnModelCreating(modelBuilder);
     }
 }

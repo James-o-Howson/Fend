@@ -10,8 +10,8 @@ namespace Fend.Infrastructure.Data;
 
 public static class ServiceConfiguration
 {
-    public static void AddDatabase<TDbContextInterface, TDbContext>(this IServiceCollection services) 
-        where TDbContext : ModuleDbContext, TDbContextInterface 
+    public static void AddDatabase<TDbContextInterface, TDbContext>(this IServiceCollection services, Action<DbContextOptionsBuilder>? configure = null) 
+        where TDbContext : DbContext, TDbContextInterface 
         where TDbContextInterface : class, IUnitOfWork
     {
         services.AddScoped<ISaveChangesInterceptor, AuditableEntitySaveChangesInterceptor>();
@@ -23,6 +23,8 @@ public static class ServiceConfiguration
             
             options.UseSqlite(databaseOptions.ConnectionString).LogTo(Console.WriteLine, LogLevel.Information);
             options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
+            
+            configure?.Invoke(options);
         });
 
         services.AddScoped(provider => provider.GetRequiredService<TDbContext>());
